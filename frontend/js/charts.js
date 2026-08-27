@@ -64,7 +64,7 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
     const std = Math.sqrt(variance);
     const range = max - min;
 
-    // Populate Left Details Panel
+    // Populate Right Details Panel
     if (detailsPanel) {
       detailsPanel.innerHTML = `
         <div class="chart-stats-mini-grid">
@@ -96,7 +96,7 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
 
         <div class="chart-summary-note">
           <i class="fa-solid fa-circle-info" style="color: var(--accent-cyan);"></i>
-          <span>Data kuantitatif dengan <strong>N = ${n}</strong> observasi. Rentang data bergerak dari <strong>${min.toLocaleString('id-ID')}</strong> hingga <strong>${max.toLocaleString('id-ID')}</strong>.</span>
+          <span>Data kuantitatif dengan <strong>N = ${n}</strong> observasi. Nilai berkisar dari <strong>${min.toLocaleString('id-ID')}</strong> sampai <strong>${max.toLocaleString('id-ID')}</strong>.</span>
         </div>
       `;
     }
@@ -133,45 +133,43 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
           hoverBackgroundColor: 'rgba(129, 140, 248, 0.95)',
           borderColor: '#818cf8',
           borderWidth: 1.5,
-          borderRadius: 6,
+          borderRadius: 5,
         }]
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-          padding: { top: 4, bottom: 4, left: 4, right: 4 }
-        },
+        maintainAspectRatio: true,
+        aspectRatio: 1.22,
         plugins: {
           legend: { display: false },
           title: {
             display: true,
-            text: `Histogram Sebaran: ${colName}`,
+            text: `Histogram: ${colName}`,
             color: '#cbd5e1',
             font: { family: 'Inter', size: 12, weight: '600' },
-            padding: { bottom: 8 }
+            padding: { bottom: 4 }
           },
           tooltip: {
             backgroundColor: 'rgba(15, 23, 42, 0.95)',
-            titleFont: { family: 'Inter', size: 11.5, weight: '700' },
-            bodyFont: { family: 'Inter', size: 11.5 },
+            titleFont: { family: 'Inter', size: 11, weight: '700' },
+            bodyFont: { family: 'Inter', size: 11 },
             padding: 8,
             borderColor: 'rgba(255, 255, 255, 0.1)',
             borderWidth: 1,
             displayColors: false,
             callbacks: {
-              label: (context) => `Jumlah: ${context.parsed.y} data (${((context.parsed.y / totalN) * 100).toFixed(1)}%)`
+              label: (context) => `Jumlah: ${context.parsed.y} (${((context.parsed.y / totalN) * 100).toFixed(1)}%)`
             }
           }
         },
         scales: {
           x: {
             grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { size: 10 } }
+            ticks: { color: '#94a3b8', font: { size: 9.5 } }
           },
           y: {
             grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', stepSize: 1, font: { size: 10 } }
+            ticks: { color: '#94a3b8', stepSize: 1, font: { size: 9.5 } }
           }
         }
       }
@@ -213,7 +211,7 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
     const dominantCategory = sortedEntries.length > 0 ? sortedEntries[0] : ['-', 0];
     const dominantPct = totalN > 0 ? ((dominantCategory[1] / totalN) * 100).toFixed(1) : '0';
 
-    // Populate Left Details Panel
+    // Populate Right Details Panel
     if (detailsPanel) {
       const breakdownRows = sortedEntries.map(([catName, count], idx) => {
         const pct = totalN > 0 ? ((count / totalN) * 100).toFixed(1) : '0.0';
@@ -237,18 +235,18 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
       }).join('');
 
       detailsPanel.innerHTML = `
-        <div class="chart-stats-mini-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 12px;">
+        <div class="chart-stats-mini-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 10px;">
           <div class="chart-mini-stat-card">
             <span class="mini-stat-label"><i class="fa-solid fa-database"></i> Total Data (N)</span>
             <span class="mini-stat-value">${totalN}</span>
           </div>
           <div class="chart-mini-stat-card">
-            <span class="mini-stat-label"><i class="fa-solid fa-layer-group"></i> Kategori Unik (K)</span>
+            <span class="mini-stat-label"><i class="fa-solid fa-layer-group"></i> Kategori (K)</span>
             <span class="mini-stat-value">${uniqueCount}</span>
           </div>
           <div class="chart-mini-stat-card">
             <span class="mini-stat-label"><i class="fa-solid fa-crown" style="color: var(--accent-amber);"></i> Modus (Dominan)</span>
-            <span class="mini-stat-value" style="font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${dominantCategory[0]}">
+            <span class="mini-stat-value" style="font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${dominantCategory[0]}">
               ${dominantCategory[0]} <small>(${dominantPct}%)</small>
             </span>
           </div>
@@ -264,7 +262,7 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
       `;
     }
 
-    // Render Doughnut Chart perfectly centered with balanced margins
+    // Render Doughnut Chart with fixed aspect ratio to ensure it stays in bounds
     const ctx = canvas.getContext('2d');
     activeChartInstance = new Chart(ctx, {
       type: 'doughnut',
@@ -280,25 +278,18 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
+        aspectRatio: 1.12,
         cutout: '58%',
-        layout: {
-          padding: {
-            top: 4,
-            bottom: 4,
-            left: 4,
-            right: 4
-          }
-        },
         plugins: {
           legend: {
             position: 'bottom',
             labels: {
               color: '#94a3b8',
-              font: { family: 'Inter', size: 11, weight: '500' },
-              boxWidth: 10,
-              boxHeight: 10,
-              padding: 8,
+              font: { family: 'Inter', size: 10.5, weight: '500' },
+              boxWidth: 8,
+              boxHeight: 8,
+              padding: 6,
               usePointStyle: true,
               pointStyle: 'circle'
             }
@@ -308,12 +299,12 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
             text: `Proporsi: ${colName}`,
             color: '#cbd5e1',
             font: { family: 'Inter', size: 12, weight: '600' },
-            padding: { bottom: 6 }
+            padding: { bottom: 4 }
           },
           tooltip: {
             backgroundColor: 'rgba(15, 23, 42, 0.95)',
-            titleFont: { family: 'Inter', size: 11.5, weight: '700' },
-            bodyFont: { family: 'Inter', size: 11.5 },
+            titleFont: { family: 'Inter', size: 11, weight: '700' },
+            bodyFont: { family: 'Inter', size: 11 },
             padding: 8,
             borderColor: 'rgba(255, 255, 255, 0.1)',
             borderWidth: 1,

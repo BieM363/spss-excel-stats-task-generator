@@ -23,7 +23,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 
@@ -98,7 +98,7 @@
         <div class="control-group">
           <div>
             <label class="control-label" for="theme-select"><i class="fa-solid fa-folder-tree"></i> Tema Survei / Data</label>
-            <select id="theme-select" class="form-select" style="min-width: 320px;"></select>
+            <select id="theme-select" class="form-select" style="max-width: 320px; width: 100%;"></select>
           </div>
 
           <div>
@@ -189,16 +189,16 @@
           </div>
 
           <div class="chart-main-layout">
-            <!-- Left Panel: Summary & Category / Metric Breakdown -->
-            <div class="chart-details-panel" id="chart-details-panel">
-              <!-- Will be populated dynamically by charts.js -->
-            </div>
-
-            <!-- Right Panel: Chart Canvas Wrapper -->
+            <!-- Left: Chart Canvas Wrapper (Centered & Contained) -->
             <div class="chart-canvas-wrapper">
               <div class="chart-canvas-inner">
                 <canvas id="chart-canvas"></canvas>
               </div>
+            </div>
+
+            <!-- Right: Summary & Category / Metric Breakdown -->
+            <div class="chart-details-panel" id="chart-details-panel">
+              <!-- Will be populated dynamically by charts.js -->
             </div>
           </div>
         </div>
