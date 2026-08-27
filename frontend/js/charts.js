@@ -14,11 +14,15 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
 
   if (!canvas) return;
 
-  // Destroy previous chart instance if exists
+  // Destroy previous chart instance and clean canvas attributes
   if (activeChartInstance) {
     activeChartInstance.destroy();
     activeChartInstance = null;
   }
+  canvas.removeAttribute('width');
+  canvas.removeAttribute('height');
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
 
   // Extract raw non-null values
   const rawValues = sampleData
@@ -97,7 +101,7 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
       `;
     }
 
-    // Build 7-8 histogram bins
+    // Build histogram bins
     const binCount = Math.min(8, Math.max(4, Math.floor(Math.sqrt(numValues.length))));
     const step = (max - min) / binCount || 1;
 
@@ -135,36 +139,39 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        layout: {
+          padding: { top: 4, bottom: 4, left: 4, right: 4 }
+        },
         plugins: {
           legend: { display: false },
           title: {
             display: true,
-            text: `Histogram Sebaran Frekuensi: ${colName}`,
+            text: `Histogram Sebaran: ${colName}`,
             color: '#cbd5e1',
-            font: { family: 'Inter', size: 12.5, weight: '600' },
-            padding: { bottom: 12 }
+            font: { family: 'Inter', size: 12, weight: '600' },
+            padding: { bottom: 8 }
           },
           tooltip: {
             backgroundColor: 'rgba(15, 23, 42, 0.95)',
-            titleFont: { family: 'Inter', size: 12, weight: '700' },
-            bodyFont: { family: 'Inter', size: 12 },
-            padding: 10,
+            titleFont: { family: 'Inter', size: 11.5, weight: '700' },
+            bodyFont: { family: 'Inter', size: 11.5 },
+            padding: 8,
             borderColor: 'rgba(255, 255, 255, 0.1)',
             borderWidth: 1,
             displayColors: false,
             callbacks: {
-              label: (context) => `Jumlah: ${context.parsed.y} observasi (${((context.parsed.y / totalN) * 100).toFixed(1)}%)`
+              label: (context) => `Jumlah: ${context.parsed.y} data (${((context.parsed.y / totalN) * 100).toFixed(1)}%)`
             }
           }
         },
         scales: {
           x: {
             grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { size: 10.5 } }
+            ticks: { color: '#94a3b8', font: { size: 10 } }
           },
           y: {
             grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', stepSize: 1, font: { size: 11 } }
+            ticks: { color: '#94a3b8', stepSize: 1, font: { size: 10 } }
           }
         }
       }
@@ -214,7 +221,7 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
         return `
           <div class="cat-dist-item">
             <div class="cat-item-left">
-              <span class="cat-color-dot" style="background: ${color}; box-shadow: 0 0 8px ${color}66;"></span>
+              <span class="cat-color-dot" style="background: ${color}; box-shadow: 0 0 6px ${color}88;"></span>
               <span class="cat-name-label" title="${catName}">${catName}</span>
             </div>
             <div class="cat-item-bar-col">
@@ -240,8 +247,8 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
             <span class="mini-stat-value">${uniqueCount}</span>
           </div>
           <div class="chart-mini-stat-card">
-            <span class="mini-stat-label"><i class="fa-solid fa-crown" style="color: var(--accent-amber);"></i> Modus / Terbanyak</span>
-            <span class="mini-stat-value" style="font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${dominantCategory[0]}">
+            <span class="mini-stat-label"><i class="fa-solid fa-crown" style="color: var(--accent-amber);"></i> Modus (Dominan)</span>
+            <span class="mini-stat-value" style="font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${dominantCategory[0]}">
               ${dominantCategory[0]} <small>(${dominantPct}%)</small>
             </span>
           </div>
@@ -249,7 +256,7 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
 
         <div class="cat-dist-header">
           <span><i class="fa-solid fa-list-check"></i> Rincian Proporsi Kategori</span>
-          <span style="font-size: 11.5px; color: var(--text-muted);">Frekuensi &amp; Rasio</span>
+          <span style="font-size: 11px; color: var(--text-muted);">Frekuensi &amp; Rasio</span>
         </div>
         <div class="cat-dist-list">
           ${breakdownRows}
@@ -257,7 +264,7 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
       `;
     }
 
-    // Render Doughnut Chart with balanced sizing
+    // Render Doughnut Chart perfectly centered with balanced margins
     const ctx = canvas.getContext('2d');
     activeChartInstance = new Chart(ctx, {
       type: 'doughnut',
@@ -266,50 +273,55 @@ function renderColumnDistributionChart(canvasId, colName, sampleData, isNumeric,
         datasets: [{
           data: counts,
           backgroundColor: chartColors,
-          borderColor: 'rgba(15, 23, 42, 0.9)',
-          borderWidth: 2.5,
-          hoverOffset: 8,
+          borderColor: '#0f172a',
+          borderWidth: 2,
+          hoverOffset: 6,
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        cutout: '62%',
+        cutout: '58%',
         layout: {
-          padding: 8
+          padding: {
+            top: 4,
+            bottom: 4,
+            left: 4,
+            right: 4
+          }
         },
         plugins: {
           legend: {
             position: 'bottom',
             labels: {
               color: '#94a3b8',
-              font: { family: 'Inter', size: 11.5, weight: '500' },
-              boxWidth: 12,
-              boxHeight: 12,
-              padding: 10,
+              font: { family: 'Inter', size: 11, weight: '500' },
+              boxWidth: 10,
+              boxHeight: 10,
+              padding: 8,
               usePointStyle: true,
               pointStyle: 'circle'
             }
           },
           title: {
             display: true,
-            text: `Proporsi Distribusi: ${colName}`,
+            text: `Proporsi: ${colName}`,
             color: '#cbd5e1',
-            font: { family: 'Inter', size: 12.5, weight: '600' },
-            padding: { bottom: 10 }
+            font: { family: 'Inter', size: 12, weight: '600' },
+            padding: { bottom: 6 }
           },
           tooltip: {
             backgroundColor: 'rgba(15, 23, 42, 0.95)',
-            titleFont: { family: 'Inter', size: 12, weight: '700' },
-            bodyFont: { family: 'Inter', size: 12 },
-            padding: 10,
+            titleFont: { family: 'Inter', size: 11.5, weight: '700' },
+            bodyFont: { family: 'Inter', size: 11.5 },
+            padding: 8,
             borderColor: 'rgba(255, 255, 255, 0.1)',
             borderWidth: 1,
             callbacks: {
               label: (context) => {
                 const val = context.parsed;
                 const pct = totalN > 0 ? ((val / totalN) * 100).toFixed(1) : 0;
-                return ` ${context.label}: ${val} observasi (${pct}%)`;
+                return ` ${context.label}: ${val} (${pct}%)`;
               }
             }
           }

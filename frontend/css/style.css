@@ -1233,10 +1233,12 @@ body {
 
 .chart-main-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  align-items: center;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 20px;
+  align-items: stretch;
   min-height: 280px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Left Details Panel */
@@ -1249,6 +1251,8 @@ body {
   flex-direction: column;
   height: 100%;
   min-height: 280px;
+  min-width: 0;
+  box-sizing: border-box;
   justify-content: center;
 }
 
@@ -1259,71 +1263,78 @@ body {
 .chart-stats-mini-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 
 .chart-mini-stat-card {
   background: var(--bg-glass-strong);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 10px 12px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  min-width: 0;
 }
 
 .mini-stat-label {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 600;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mini-stat-value {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
   color: var(--text-primary);
   font-family: var(--font-sans);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chart-summary-note {
-  margin-top: 14px;
-  padding: 10px 14px;
+  margin-top: 12px;
+  padding: 10px 12px;
   border-radius: var(--radius-md);
   background: rgba(6, 182, 212, 0.08);
   border: 1px solid rgba(6, 182, 212, 0.2);
-  font-size: 12.5px;
+  font-size: 12px;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
   gap: 8px;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 .cat-dist-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   color: var(--text-secondary);
   margin-bottom: 8px;
-  padding: 0 4px;
+  padding: 0 2px;
 }
 
 .cat-dist-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  max-height: 200px;
+  gap: 6px;
+  max-height: 190px;
   overflow-y: auto;
-  padding-right: 4px;
+  padding-right: 3px;
 }
 
 .cat-dist-list::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 .cat-dist-list::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.15);
@@ -1332,13 +1343,14 @@ body {
 
 .cat-dist-item {
   display: grid;
-  grid-template-columns: 140px 1fr 90px;
+  grid-template-columns: minmax(80px, 110px) 1fr auto;
   align-items: center;
-  gap: 10px;
-  padding: 6px 8px;
+  gap: 8px;
+  padding: 5px 8px;
   border-radius: var(--radius-sm);
   background: var(--bg-glass);
   transition: all 0.2s ease;
+  min-width: 0;
 }
 
 .cat-dist-item:hover {
@@ -1348,19 +1360,19 @@ body {
 .cat-item-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
 }
 
 .cat-color-dot {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .cat-name-label {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -1370,11 +1382,12 @@ body {
 
 .cat-item-bar-col {
   width: 100%;
+  min-width: 40px;
 }
 
 .cat-bar-track {
   width: 100%;
-  height: 7px;
+  height: 6px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 9999px;
   overflow: hidden;
@@ -1392,10 +1405,11 @@ body {
 
 .cat-item-right {
   text-align: right;
+  white-space: nowrap;
 }
 
 .cat-count-badge {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   color: var(--text-secondary);
 }
@@ -1408,15 +1422,18 @@ body {
 /* Right Chart Canvas Wrapper */
 .chart-canvas-wrapper {
   position: relative;
-  height: 280px;
+  height: 290px;
   width: 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.12);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 12px;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 [data-theme="light"] .chart-canvas-wrapper {
@@ -1427,18 +1444,15 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  max-width: 420px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  max-width: 320px;
+  max-height: 270px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 @media (max-width: 900px) {
   .chart-main-layout {
     grid-template-columns: 1fr;
-  }
-  .cat-dist-item {
-    grid-template-columns: 110px 1fr 80px;
   }
 }
 
