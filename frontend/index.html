@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generator Tugas Random SPSS & Excel | 100 Bank Soal & Otomasi Dataset Statistik BPS</title>
+  <meta name="description" content="Otomasi pembuatan dataset statistik realistis (Susenas, Sakernas, Sensus Pertanian) dan 100 Bank Soal Latihan Praktik SPSS & Excel dengan pemeriksa jawaban otomatis.">
+
+  <!-- Favicon & Brand Icons -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="img/logo.svg">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header & Navbar -->
+  <header class="app-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="brand-section">
+          <div class="brand-icon" style="background: none; box-shadow: none;">
+            <img src="img/logo.svg" alt="StatTask AutoGen Logo" width="42" height="42" style="display: block; border-radius: 10px; box-shadow: 0 4px 16px rgba(99, 102, 241, 0.45);">
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <h1 class="brand-title">StatTask AutoGen</h1>
+              <span class="brand-tag">BPS & Campus Prep</span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted);">
+              Generator Dataset Acak & Bank 300 Soal Latihan Praktik SPSS / Excel
+            </div>
+          </div>
+        </div>
+
+        <div class="header-controls">
+          <button class="btn btn-outline btn-sm" id="theme-toggle-btn" title="Toggle Tema Gelap/Terang">
+            <i class="fa-solid fa-sun"></i>
+          </button>
+          
+          <div style="display: flex; gap: 6px;">
+            <button class="btn btn-success btn-sm" onclick="exportActiveDataset('excel')" title="Download file Excel .xlsx lengkap dengan Kamus Data">
+              <i class="fa-solid fa-file-excel"></i> Unduh Excel (.xlsx)
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="exportActiveDataset('csv')" title="Download file CSV murni">
+              <i class="fa-solid fa-file-csv"></i> CSV
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="exportActiveDataset('spss')" title="Download Sintaks SPSS .sps">
+              <i class="fa-solid fa-code"></i> Sintaks SPSS (.sps)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container" style="padding-bottom: 60px;">
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" aria-label="Navigasi Utama Aplikasi">
+      <button class="tab-btn active" data-tab="tab-dataset">
+        <i class="fa-solid fa-database"></i> Generator & Data Preview
+      </button>
+      <button class="tab-btn" data-tab="tab-quiz">
+        <i class="fa-solid fa-list-check"></i> Mode Kuis & Tugas Latihan (300 Soal)
+      </button>
+      <button class="tab-btn" data-tab="tab-bank">
+        <i class="fa-solid fa-book-open"></i> Kamus Bank 300 Soal
+      </button>
+      <button class="tab-btn" data-tab="tab-calculator">
+        <i class="fa-solid fa-calculator"></i> Internal Validator / Calculator
+      </button>
+      <button class="tab-btn" data-tab="tab-cheatsheet">
+        <i class="fa-solid fa-receipt"></i> Cheatsheet Rumus & Menu SPSS
+      </button>
+    </nav>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 1: DATASET GENERATOR & VISUALISASI -->
+    <!-- ===================================================================== -->
+    <section class="tab-pane active" id="tab-dataset">
+      <!-- Control Bar Generator -->
+      <div class="control-bar">
+        <div class="control-group">
+          <div>
+            <label class="control-label" for="theme-select"><i class="fa-solid fa-folder-tree"></i> Tema Survei / Data</label>
+            <select id="theme-select" class="form-select" style="min-width: 320px;"></select>
+          </div>
+
+          <div>
+            <label class="control-label" for="sample-size-input"><i class="fa-solid fa-users"></i> Ukuran Sampel (N)</label>
+            <input type="number" id="sample-size-input" class="form-input" value="50" min="15" max="500" style="width: 90px;" />
+          </div>
+
+          <div>
+            <label class="control-label" for="seed-input"><i class="fa-solid fa-dice"></i> Seed Acak (Opsional)</label>
+            <input type="number" id="seed-input" class="form-input" placeholder="Otomatis" style="width: 110px;" />
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="triggerGenerateDataset()">
+          <i class="fa-solid fa-arrows-rotate"></i> Generate Dataset Baru
+        </button>
+      </div>
+
+      <!-- Stats Summary Widgets -->
+      <div class="stats-grid">
+        <div class="stat-widget">
+          <div class="stat-icon-wrapper" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">
+            <i class="fa-solid fa-table-rows"></i>
+          </div>
+          <div>
+            <div class="stat-val" id="stat-total-rows">50</div>
+            <div class="stat-label">Jumlah Observasi (N)</div>
+          </div>
+        </div>
+
+        <div class="stat-widget">
+          <div class="stat-icon-wrapper" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">
+            <i class="fa-solid fa-table-columns"></i>
+          </div>
+          <div>
+            <div class="stat-val" id="stat-total-cols">12</div>
+            <div class="stat-label">Jumlah Variabel Kolom</div>
+          </div>
+        </div>
+
+        <div class="stat-widget">
+          <div class="stat-icon-wrapper" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+            <i class="fa-solid fa-tag"></i>
+          </div>
+          <div>
+            <div class="stat-val" id="stat-theme-name" style="font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px;">Susenas BPS</div>
+            <div class="stat-label">Tema Survei Aktif</div>
+          </div>
+        </div>
+
+        <div class="stat-widget">
+          <div class="stat-icon-wrapper" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">
+            <i class="fa-solid fa-fingerprint"></i>
+          </div>
+          <div>
+            <div class="stat-val" id="stat-seed-val">42</div>
+            <div class="stat-label">Seed Parameter</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Dataset Grid (Visualizer + Table) -->
+      <div style="display: grid; grid-template-columns: 1fr; gap: 24px;">
+        <!-- Visualizer Card -->
+        <div class="glass-card chart-visualizer-card">
+          <div class="chart-header-bar">
+            <div class="chart-header-title-group">
+              <div class="chart-icon-badge" id="chart-icon-badge">
+                <i class="fa-solid fa-chart-pie"></i>
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <h3 style="font-size: 16.5px; font-weight: 700; margin: 0;">Visualisasi Distribusi Kolom</h3>
+                  <span id="chart-type-badge" class="col-type-pill pill-categorical">Kategorik</span>
+                </div>
+                <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 3px;">
+                  Grafik proporsi sebaran dan statistik ringkas variabel aktif
+                </p>
+              </div>
+            </div>
+
+            <div class="chart-controls-wrap">
+              <label class="control-label" for="chart-col-select" style="margin: 0;">
+                <i class="fa-solid fa-table-columns"></i> Pilih Kolom:
+              </label>
+              <select id="chart-col-select" class="form-select" style="min-width: 200px; font-weight: 600;"></select>
+            </div>
+          </div>
+
+          <div class="chart-main-layout">
+            <!-- Left Panel: Summary & Category / Metric Breakdown -->
+            <div class="chart-details-panel" id="chart-details-panel">
+              <!-- Will be populated dynamically by charts.js -->
+            </div>
+
+            <!-- Right Panel: Chart Canvas Wrapper -->
+            <div class="chart-canvas-wrapper">
+              <div class="chart-canvas-inner">
+                <canvas id="chart-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Preview Table Card -->
+        <div class="glass-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div>
+              <h3 style="font-size: 16px; font-weight: 700;">
+                <i class="fa-solid fa-table" style="color: var(--accent-emerald);"></i> Cuplikan Data Responden (Preview 15 Baris Pertama)
+              </h3>
+              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">
+                Gunakan tombol unduh Excel / CSV di kanan atas untuk melihat seluruh data lengkap.
+              </p>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead id="dataset-table-head"></thead>
+              <tbody id="dataset-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Data Dictionary Card -->
+        <div class="glass-card">
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px;">
+            <i class="fa-solid fa-book" style="color: var(--accent-amber);"></i> Kamus Variabel (Metadata)
+          </h3>
+          <div id="data-dictionary-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 2: MODE KUIS & TUGAS LATIHAN (300 SOAL VARIATIF) -->
+    <!-- ===================================================================== -->
+    <section class="tab-pane" id="tab-quiz">
+      <div class="glass-card" style="margin-bottom: 24px;">
+        <div class="quiz-header">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 800;">
+              <i class="fa-solid fa-circle-question" style="color: var(--accent-primary);"></i> Dynamic Task / Quiz Generator
+            </h2>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">
+              Soal di-generate secara matematis dan dinamis berdasarkan dataset aktif di atas. Tidak mengulang!
+            </p>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div>
+              <label class="control-label" for="quiz-count-select">Banyak Soal:</label>
+              <select id="quiz-count-select" class="form-select">
+                <option value="5">5 Soal Cepat</option>
+                <option value="10" selected>10 Soal Standar</option>
+                <option value="25">25 Soal Latihan</option>
+                <option value="50">50 Soal Simulasi</option>
+                <option value="100">100 Soal Marathon</option>
+                <option value="200">200 Soal Ujian Komprehensif</option>
+                <option value="300">🔥 300 Soal Marathon (Semua Modul)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="control-label" for="quiz-cat-filter">Kategori:</label>
+              <select id="quiz-cat-filter" class="form-select"></select>
+            </div>
+
+            <div>
+              <label class="control-label" for="quiz-diff-filter">Tingkat Kesulitan:</label>
+              <select id="quiz-diff-filter" class="form-select">
+                <option value="all">Semua Kesulitan</option>
+                <option value="Mudah">Mudah</option>
+                <option value="Sedang">Sedang</option>
+                <option value="Sulit">Sulit</option>
+              </select>
+            </div>
+
+            <button class="btn btn-primary" onclick="triggerGenerateQuiz()" style="margin-top: 18px;">
+              <i class="fa-solid fa-shuffle"></i> Buat Paket Soal Baru
+            </button>
+            <button class="btn btn-outline" onclick="printQuizTasks()" style="margin-top: 18px;" title="Cetak Lembar Soal ke PDF/Printer">
+              <i class="fa-solid fa-print"></i> Cetak / PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Quiz Progress & Score Card -->
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--text-secondary);">
+          <div>
+            Progres: Terjawab <span id="quiz-score-answered" style="color: var(--text-primary);">0</span> dari <span id="quiz-score-total">10</span> Soal
+          </div>
+          <div>
+            Skor Benar: <span id="quiz-score-correct" style="color: var(--accent-emerald); font-size: 16px; font-weight: 800;">0</span>
+          </div>
+        </div>
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Container Soal -->
+      <div id="quiz-questions-container"></div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 3: KAMUS BANK 300 SOAL LENGKAP -->
+    <!-- ===================================================================== -->
+    <section class="tab-pane" id="tab-bank">
+      <div class="glass-card" style="margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 800;">
+              <i class="fa-solid fa-swatchbook" style="color: var(--accent-violet);"></i> Katalog Lengkap 300 Bank Soal Statistik
+            </h2>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">
+              Eksplorasi seluruh 300 template soal dari 10 modul statistik beserta panduan rumus Excel dan SPSS.
+            </p>
+          </div>
+          <div id="bank-count-label" class="badge badge-cat" style="font-size: 13px; padding: 6px 14px;">300 Soal</div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap;">
+          <input type="text" id="bank-search-input" class="form-input" placeholder="Cari topik / nama analisis / ID soal..." style="flex: 1; min-width: 240px;" oninput="filterQuestionBank()" />
+          <select id="bank-cat-filter" class="form-select" onchange="filterQuestionBank()"></select>
+          <select id="bank-diff-filter" class="form-select" onchange="filterQuestionBank()">
+            <option value="all">Semua Kesulitan</option>
+            <option value="Mudah">Mudah</option>
+            <option value="Sedang">Sedang</option>
+            <option value="Sulit">Sulit</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bank-grid" id="bank-cards-grid"></div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 4: UNIVERSAL INTERNAL CALCULATOR & VALIDATOR -->
+    <!-- ===================================================================== -->
+    <section class="tab-pane" id="tab-calculator">
+      <div class="glass-card">
+        <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">
+          <i class="fa-solid fa-calculator" style="color: var(--accent-emerald);"></i> Universal Statistical Calculator
+        </h2>
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px;">
+          Kalkulator internal untuk memverifikasi perhitungan manual atau hasil dari software SPSS/Excel pada data kustom Anda sendiri.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 20px;">
+          <div>
+            <label class="control-label" for="calc-analysis-type">Jenis Uji / Analisis Statistik:</label>
+            <select id="calc-analysis-type" class="form-select" style="width: 100%; margin-top: 4px;">
+              <option value="mean">Statistika Deskriptif: Mean & Jumlah</option>
+              <option value="median">Statistika Deskriptif: Median</option>
+              <option value="dispersion">Ukuran Dispersi Lengkap (Range, Varians, SD, Q1, Q3, IQR, Skewness, Kurtosis)</option>
+              <option value="ttest_1samp">Uji t Satu Sampel (One-Sample t-Test)</option>
+              <option value="ttest_ind">Uji t Dua Sampel Independen</option>
+              <option value="ttest_paired">Uji t Sampel Berpasangan (Paired t-Test)</option>
+              <option value="correlation">Korelasi Pearson, Spearman & R-Squared</option>
+              <option value="regression">Regresi Linear Sederhana (Slope, Intercept, R², F, t)</option>
+              <option value="bps_poverty">Indikator BPS: Indeks Kemiskinan FGT (P0, P1, P2)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="control-label" for="calc-param-mu0">Parameter Nilai Acuan (mu0 / Garis Kemiskinan):</label>
+            <input type="number" id="calc-param-mu0" class="form-input" value="50" style="width: 100%; margin-top: 4px;" />
+          </div>
+        </div>
+
+        <div class="calc-inputs-grid">
+          <div>
+            <label class="control-label" for="calc-input-x">Data Variabel X (Pisahkan dengan koma atau spasi/baris baru):</label>
+            <textarea id="calc-input-x" class="form-input" rows="5" style="width: 100%; margin-top: 4px; font-family: var(--font-mono); font-size: 13px;" placeholder="Contoh: 12, 15, 18, 20, 22, 25, 30"></textarea>
+          </div>
+
+          <div>
+            <label class="control-label" for="calc-input-y">Data Variabel Y / Kelompok 2 (Untuk Uji 2 Sampel / Korelasi / Regresi):</label>
+            <textarea id="calc-input-y" class="form-input" rows="5" style="width: 100%; margin-top: 4px; font-family: var(--font-mono); font-size: 13px;" placeholder="Contoh: 14, 17, 19, 21, 24, 28, 31"></textarea>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="runUniversalCalculator()">
+          <i class="fa-solid fa-play"></i> Hitung Hasil Komputasi Eksak
+        </button>
+
+        <div id="calc-result-box" style="display: none; margin-top: 20px;" class="glass-card"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 5: CHEATSHEET RUMUS EXCEL & MENU SPSS -->
+    <!-- ===================================================================== -->
+    <section class="tab-pane" id="tab-cheatsheet">
+      <!-- Cheatsheet Control Bar -->
+      <div class="glass-card" style="margin-bottom: 24px; padding: 18px 24px;">
+        <div class="cheatsheet-toolbar">
+          <div class="cheatsheet-search-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input 
+              type="text" 
+              id="cheatsheet-search-input" 
+              class="form-input search-field" 
+              placeholder="Cari rumus / menu SPSS (contoh: ANOVA, Mean, t-test, Regresi)..." 
+              autocomplete="off"
+            />
+            <button class="clear-search-btn" id="cheatsheet-clear-search-btn" onclick="clearCheatsheetSearch()" title="Hapus pencarian">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <div class="cheatsheet-view-filter">
+            <span class="filter-label"><i class="fa-solid fa-filter"></i> Filter Tampilan:</span>
+            <div class="filter-pills" role="group" aria-label="Filter Tampilan Cheatsheet">
+              <button class="filter-pill-btn active" id="btn-show-all-cheatsheet" onclick="switchCheatsheetView('all')">
+                <i class="fa-solid fa-layer-group"></i> Semua (<span id="count-all-badge">28</span>)
+              </button>
+              <button class="filter-pill-btn" id="btn-show-excel-cheatsheet" onclick="switchCheatsheetView('excel')">
+                <i class="fa-solid fa-file-excel" style="color: #10b981;"></i> Rumus Excel (<span id="count-excel-pill">16</span>)
+              </button>
+              <button class="filter-pill-btn" id="btn-show-spss-cheatsheet" onclick="switchCheatsheetView('spss')">
+                <i class="fa-solid fa-calculator" style="color: #f472b6;"></i> Navigasi SPSS (<span id="count-spss-pill">12</span>)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cheatsheet-grid" id="cheatsheet-container">
+        <!-- Excel Table -->
+        <div class="glass-card cheatsheet-col" id="cheatsheet-excel-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+            <h3 style="font-size: 17px; font-weight: 700; color: var(--accent-emerald); display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-file-excel"></i> Cheatsheet Rumus Statistik Excel
+            </h3>
+            <span class="badge" style="background: var(--accent-emerald-bg); color: var(--accent-emerald);" id="excel-count-badge">16 Rumus</span>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Kategori</th>
+                  <th>Analisis</th>
+                  <th>Formula Excel</th>
+                  <th>Catatan</th>
+                  <th style="text-align: center;">Panduan</th>
+                </tr>
+              </thead>
+              <tbody id="cheatsheet-excel-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SPSS Table -->
+        <div class="glass-card cheatsheet-col" id="cheatsheet-spss-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+            <h3 style="font-size: 17px; font-weight: 700; color: #f472b6; display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-calculator"></i> Panduan Menu Navigasi IBM SPSS
+            </h3>
+            <span class="badge" style="background: rgba(244, 114, 182, 0.15); color: #f472b6;" id="spss-count-badge">12 Menu</span>
+          </div>
+          <div class="table-responsive">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Analisis & Kategori</th>
+                  <th>Jalur Menu SPSS</th>
+                  <th>Output Utama</th>
+                  <th style="text-align: center;">Info Detail</th>
+                </tr>
+              </thead>
+              <tbody id="cheatsheet-spss-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- SWEETALERT2-STYLE STATISTICAL GUIDE DETAIL MODAL -->
+  <!-- ===================================================================== -->
+  <div class="modal-backdrop" id="cheatsheet-detail-modal" onclick="closeCheatsheetModal(event)">
+    <div class="swal-custom-modal" onclick="event.stopPropagation()">
+      <div class="swal-header">
+        <div class="swal-icon-circle" id="swal-icon-container">
+          <i class="fa-solid fa-calculator"></i>
+        </div>
+        <div class="swal-title-area">
+          <div class="swal-badge" id="swal-modal-badge">IBM SPSS Navigation</div>
+          <h2 class="swal-modal-title" id="swal-modal-title">Judul Analisis</h2>
+        </div>
+        <button class="swal-close-btn" onclick="hideCheatsheetDetailModal()" title="Tutup Modal (ESC)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="swal-modal-body" id="swal-modal-content">
+        <!-- Dynamic rich content inserted here via JS -->
+      </div>
+
+      <div class="swal-modal-footer">
+        <button class="btn btn-outline" id="swal-copy-btn" onclick="copyCheatsheetSteps()">
+          <i class="fa-regular fa-copy"></i> <span id="swal-copy-text">Salin Langkah / Rumus</span>
+        </button>
+        <button class="btn btn-primary" onclick="hideCheatsheetDetailModal()">
+          <i class="fa-solid fa-check"></i> Mengerti & Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts with cache busting -->
+  <script src="js/charts.js?v=4"></script>
+  <script src="js/question_renderer.js?v=4"></script>
+  <script src="js/app.js?v=4"></script>
+</body>
+</html>
