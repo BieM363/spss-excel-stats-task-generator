@@ -1,8 +1,8 @@
 """
 Statistical Solver Engine for Generator Tugas Random SPSS & Excel
-Author: Antigravity
+Author: BieM363 (https://github.com/BieM363)
 Provides exact statistical computations, formula derivations,
-Excel formulas, and SPSS menu instructions for all 100 question types.
+Excel formulas, and SPSS menu instructions for all 300 question types.
 """
 
 from typing import Any, Dict, List, Optional, Tuple, Union

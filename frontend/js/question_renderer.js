@@ -1,6 +1,6 @@
 /**
  * Question Card Renderer & Quiz Interactive Controller
- * Author: Antigravity
+ * Author: BieM363 (https://github.com/BieM363)
  */
 
 const QuestionRenderer = {

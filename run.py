@@ -1,6 +1,6 @@
 """
 Launcher Script for Generator Tugas Random SPSS & Excel
-Author: Antigravity
+Author: BieM363 (https://github.com/BieM363)
 Usage: python run.py
 """
 
@@ -16,6 +16,7 @@ def open_browser():
 if __name__ == "__main__":
     print("=" * 70)
     print("🚀 Memulai Generator Tugas Random SPSS & Excel (300 Bank Soal)")
+    print("   Dibuat & Dikembangkan oleh: BieM363")
     print("   Server berjalan di: http://localhost:8000")
     print("=" * 70)
     

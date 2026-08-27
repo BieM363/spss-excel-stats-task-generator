@@ -1,8 +1,8 @@
 """
 FastAPI Server for Generator Tugas Random SPSS & Excel
-Author: Antigravity
+Author: BieM363 (https://github.com/BieM363)
 Main application exposing statistical calculation, dataset generation,
-dynamic 100-question quiz, answer validation, and file export endpoints.
+dynamic 300-question quiz, answer validation, and file export endpoints.
 """
 
 import os
@@ -23,8 +23,12 @@ from backend.cheatsheet_data import SPSS_NAV_MENUS, EXCEL_FORMULAS
 
 app = FastAPI(
     title="Generator Tugas Random SPSS & Excel API",
-    description="Otomasi Dataset Statistik & 100 Bank Soal Latihan Praktik SPSS & Excel",
+    description="Otomasi Dataset Statistik & 300 Bank Soal Latihan Praktik SPSS & Excel",
     version="1.0.0",
+    contact={
+        "name": "BieM363",
+        "url": "https://github.com/BieM363",
+    },
 )
 
 # Enable CORS for local development
@@ -88,6 +92,20 @@ class UniversalCalculationRequest(BaseModel):
 # =============================================================================
 # API ENDPOINTS
 # =============================================================================
+
+@app.get("/api/info")
+def get_app_info():
+    return {
+        "app_name": "StatTask AutoGen",
+        "title": "Generator Tugas Random SPSS & Excel",
+        "author": "BieM363",
+        "github": "https://github.com/BieM363/spss-excel-stats-task-generator",
+        "version": "1.0.0",
+        "status": "online",
+        "total_questions": 300,
+        "total_modules": 10,
+    }
+
 
 @app.get("/api/themes")
 def get_themes():

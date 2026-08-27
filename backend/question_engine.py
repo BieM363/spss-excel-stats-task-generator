@@ -1,6 +1,6 @@
 """
 Dynamic Question Engine for Generator Tugas Random SPSS & Excel
-Author: Antigravity
+Author: BieM363 (https://github.com/BieM363)
 Instantiates question templates against active datasets, generates randomized parameter variations,
 and validates user submissions with detailed mathematical & software explanations.
 """

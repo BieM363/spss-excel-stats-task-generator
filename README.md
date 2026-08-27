@@ -70,11 +70,12 @@ python -m unittest tests/test_stats_and_questions.py
 ```
 15. Generator Tugas Random SPSS & Excel/
 ├── backend/
-│   ├── app.py                      # FastAPI Web Server & API Endpoints
+│   ├── app.py                      # FastAPI Web Server & API Endpoints (Controller / Router)
 │   ├── dataset_generator.py        # Mesin pembuat dataset realistis BPS & Akademik
 │   ├── question_bank_100.py        # Definisi 300 Template Soal Terstruktur
 │   ├── question_engine.py          # Mesin instansiasi soal dinamis berbasis dataset aktif
 │   ├── statistical_solver.py       # Mesin kalkulasi ilmiah (SciPy/Statsmodels/Pandas) & solver
+│   ├── cheatsheet_data.py          # Database panduan menu SPSS & rumus Excel
 │   └── export_service.py           # Layanan export data ke .xlsx, .csv, dan .sps
 ├── frontend/
 │   ├── index.html                  # Halaman aplikasi web modern
@@ -90,3 +91,11 @@ python -m unittest tests/test_stats_and_questions.py
 ├── run.py                          # Skrip peluncur server lokal satu klik
 └── README.md                       # Dokumentasi lengkap proyek
 ```
+
+---
+
+## 👨‍💻 Author & Pengembang
+
+- **Developer**: **[BieM363](https://github.com/BieM363)**
+- **Repository**: [https://github.com/BieM363/spss-excel-stats-task-generator](https://github.com/BieM363/spss-excel-stats-task-generator)
+- **Lisensi**: MIT License &bull; &copy; 2026 BieM363. All Rights Reserved.

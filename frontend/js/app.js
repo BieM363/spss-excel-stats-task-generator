@@ -1,7 +1,13 @@
 /**
  * Main Application Logic for Generator Tugas Random SPSS & Excel
- * Author: Antigravity
+ * Author: BieM363 (https://github.com/BieM363)
  */
+
+console.log(
+  "%c StatTask AutoGen %c Created by BieM363 (https://github.com/BieM363) ",
+  "background:#3b82f6; color:#fff; font-weight:bold; padding:4px 8px; border-radius:4px 0 0 4px;",
+  "background:#1e293b; color:#10b981; font-weight:bold; padding:4px 8px; border-radius:0 4px 4px 0;"
+);
 
 // Global State
 window.CURRENT_DATASET = null;

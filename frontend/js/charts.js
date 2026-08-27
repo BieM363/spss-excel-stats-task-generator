@@ -1,5 +1,6 @@
 /**
  * Enhanced Chart.js Visualizer for Generator Tugas Random SPSS & Excel
+ * Author: BieM363 (https://github.com/BieM363)
  * Provides dynamic categorical pie/doughnut and numerical histogram distribution
  * with complete summary metrics & frequency breakdown.
  */

@@ -1,5 +1,6 @@
 """
 Master Cheatsheet & Statistical Reference Data for SPSS & Excel
+Author: BieM363 (https://github.com/BieM363)
 Detailed step-by-step guides, decision criteria, and syntax for 12 SPSS tests & 16 Excel formulas.
 """
 

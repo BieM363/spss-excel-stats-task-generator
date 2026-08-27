@@ -1,10 +1,10 @@
 """
 Dataset Generator Engine for Generator Tugas Random SPSS & Excel
-Author: Antigravity
+Author: BieM363 (https://github.com/BieM363)
 Generates realistic, customizable statistical datasets with BPS & Academic contexts.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 import pandas as pd
 
@@ -28,23 +28,23 @@ class DatasetGenerator:
         "sensus_pertanian": {
             "id": "sensus_pertanian",
             "name": "Sensus Pertanian BPS (Usaha Tani & Agrikultur)",
-            "description": "Dataset produktivitas pertanian, luas lahan, biaya saprodi (pupuk/pestisida), dan hasil panen.",
-            "category": "Pertanian",
-            "default_rows": 50,
+            "description": "Dataset pertanian berisi luas lahan, jenis komoditas pangan, biaya pupuk/pestisida, dan tonase panen.",
+            "category": "Pertanian & Pangan",
+            "default_rows": 60,
         },
         "pelayanan_publik": {
             "id": "pelayanan_publik",
-            "name": "Survei Kepuasan Masyarakat (SKM / Pelayanan PST)",
-            "description": "Dataset evaluasi pelayanan publik, skor kepuasan Likert, waktu tunggu, dan loyalitas pengguna data.",
+            "name": "Survei Kepuasan Masyarakat (SKM Pelayanan PST BPS)",
+            "description": "Dataset kepuasan responden terhadap fasilitas, kecepatan, keramahan petugas, dan waktu tunggu.",
             "category": "Pelayanan Publik",
-            "default_rows": 50,
+            "default_rows": 60,
         },
         "evaluasi_diklat": {
             "id": "evaluasi_diklat",
-            "name": "Evaluasi Diklat Statistik & Komputasi SPSS",
-            "description": "Dataset hasil pelatihan pegawai/mahasiswa meliputi nilai pre-test, post-test, skor SPSS, dan metode belajar.",
+            "name": "Evaluasi Pelatihan Statistika & Olah Data SPSS",
+            "description": "Dataset pre-test, post-test, nilai praktik SPSS, jam belajar, dan status kelulusan peserta diklat.",
             "category": "Pendidikan & Diklat",
-            "default_rows": 45,
+            "default_rows": 60,
         },
     }
 
@@ -103,6 +103,7 @@ class DatasetGenerator:
             "theme_id": theme_id,
             "theme_name": theme_info.get("name", "Dataset Statistik"),
             "description": theme_info.get("description", ""),
+            "author": "BieM363",
             "seed": seed,
             "total_rows": len(df),
             "columns": list(df.columns),

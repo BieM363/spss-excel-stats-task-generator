@@ -1,7 +1,7 @@
 """
-Question Bank (100 Unique Statistical Task Templates)
-Author: Antigravity
-Categorized into 10 Core Modules (10 Templates each = 100 Structured Questions).
+Question Bank (300 Unique Statistical Task Templates)
+Author: BieM363 (https://github.com/BieM363)
+Categorized into 10 Core Modules (30 Templates each = 300 Structured Questions).
 Equipped with Excel Formulas, SPSS Menu Guides, Variable Matchers, and Tolerances.
 """
 
