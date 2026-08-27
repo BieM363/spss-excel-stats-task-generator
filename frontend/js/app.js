@@ -163,32 +163,66 @@ function renderDatasetView(data) {
   const tableBody = document.getElementById('dataset-table-body');
 
   if (tableHead) {
-    tableHead.innerHTML = `<tr>${data.columns.map(c => `<th>${c}</th>`).join('')}</tr>`;
+    tableHead.innerHTML = `<tr>${data.columns.map(c => {
+      const summary = data.column_summaries?.[c];
+      const isNum = summary?.type === 'numeric';
+      const icon = isNum ? '<i class="fa-solid fa-arrow-trend-up" style="font-size: 10px; color: #818cf8; margin-right: 4px;"></i>' : '<i class="fa-solid fa-tag" style="font-size: 10px; color: #f472b6; margin-right: 4px;"></i>';
+      return `<th>${icon}${c}</th>`;
+    }).join('')}</tr>`;
   }
 
   if (tableBody) {
     tableBody.innerHTML = data.sample_data.map(row => `
-      <tr>${data.columns.map(c => `<td>${formatCellValue(row[c])}</td>`).join('')}</tr>
+      <tr>${data.columns.map(c => `<td>${formatCellValue(row[c], c, data.column_summaries?.[c])}</td>`).join('')}</tr>
     `).join('');
   }
 
-  // Render Data Dictionary Sheet view
+  // Render Data Dictionary Sheet view (Cards Grid)
   const dictContainer = document.getElementById('data-dictionary-list');
+  const dictCountPill = document.getElementById('dict-count-pill');
   if (dictContainer && data.dictionary) {
-    dictContainer.innerHTML = Object.entries(data.dictionary).map(([k, v]) => `
-      <div style="display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); font-size: 13px;">
-        <span class="q-var-tag" style="min-width: 170px;">${k}</span>
-        <span style="color: var(--text-secondary);">${v}</span>
-      </div>
-    `).join('');
+    const entries = Object.entries(data.dictionary);
+    if (dictCountPill) {
+      dictCountPill.innerHTML = `<i class="fa-solid fa-layer-group"></i> ${entries.length} Variabel Terdaftar`;
+    }
+
+    dictContainer.innerHTML = entries.map(([k, v]) => {
+      const summary = data.column_summaries?.[k];
+      const isNum = summary?.type === 'numeric';
+      const typeLabel = isNum ? 'Numerik' : 'Kategorik';
+      const typeClass = isNum ? 'pill-numeric' : 'pill-categorical';
+      const typeIcon = isNum ? 'fa-arrow-trend-up' : 'fa-shapes';
+
+      return `
+        <div class="dict-item-card">
+          <div class="dict-card-top">
+            <span class="dict-var-name">${k}</span>
+            <span class="col-type-pill ${typeClass}" style="font-size: 10px; padding: 2px 7px;">
+              <i class="fa-solid ${typeIcon}"></i> ${typeLabel}
+            </span>
+          </div>
+          <p class="dict-var-desc">${v}</p>
+        </div>
+      `;
+    }).join('');
   }
 }
 
-function formatCellValue(val) {
+function formatCellValue(val, colName, colSummary) {
+  if (val === null || val === undefined || val === '') return '<span style="color: var(--text-muted);">-</span>';
+  
   if (typeof val === 'number') {
-    return Number.isInteger(val) ? val.toLocaleString() : val.toFixed(2);
+    return `<span class="table-num-val">${Number.isInteger(val) ? val.toLocaleString('id-ID') : val.toFixed(2)}</span>`;
   }
-  return val || '-';
+
+  const strVal = String(val);
+  if (colName && (colName.toLowerCase().includes('tipe_daerah') || colName.toLowerCase().includes('status'))) {
+    return `<span class="table-tag-pill">${strVal}</span>`;
+  }
+  if (colName && colName.toLowerCase().startsWith('id_')) {
+    return `<span class="table-id-pill">${strVal}</span>`;
+  }
+  return strVal;
 }
 
 function exportActiveDataset(format) {

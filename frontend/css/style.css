@@ -389,66 +389,229 @@ body {
   color: var(--text-secondary);
 }
 
-/* Data Table */
-.table-responsive {
-  overflow-x: auto;
-  overflow-y: hidden;
+/* Main Dataset Layout */
+.main-content-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
   max-width: 100%;
   min-width: 0;
-  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+}
+
+.dataset-preview-card,
+.dictionary-card {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.card-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-icon-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.badge-emerald {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.badge-amber {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+}
+
+.preview-count-pill,
+.dict-count-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--bg-glass-strong);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Data Table Wrapper & Container */
+.table-responsive-wrapper {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
-  background: var(--bg-secondary);
+  background: rgba(15, 23, 42, 0.5);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 420px;
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table-responsive::-webkit-scrollbar {
-  height: 8px;
+  height: 7px;
+  width: 7px;
 }
 
 .table-responsive::-webkit-scrollbar-track {
-  background: var(--bg-card);
-  border-radius: 4px;
+  background: rgba(15, 23, 42, 0.8);
 }
 
 .table-responsive::-webkit-scrollbar-thumb {
-  background: var(--border-active);
+  background: rgba(99, 102, 241, 0.4);
   border-radius: 4px;
 }
 
 .table-responsive::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-primary);
+  background: rgba(99, 102, 241, 0.8);
 }
 
 .custom-table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 12.5px;
   text-align: left;
 }
 
 .custom-table th {
-  background: var(--bg-card-hover);
-  color: var(--text-primary);
-  font-weight: 600;
-  padding: 12px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #111827;
+  color: #cbd5e1;
+  font-weight: 700;
+  padding: 10px 14px;
   border-bottom: 1px solid var(--border-subtle);
   white-space: nowrap;
 }
 
 .custom-table td {
-  padding: 11px 16px;
-  border-bottom: 1px solid var(--border-subtle);
+  padding: 9px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   color: var(--text-secondary);
   white-space: nowrap;
-}
-
-.custom-table tr:last-child td {
-  border-bottom: none;
+  transition: background 0.15s ease;
 }
 
 .custom-table tr:hover td {
-  background: var(--bg-glass);
+  background: rgba(99, 102, 241, 0.08);
   color: var(--text-primary);
+}
+
+.table-num-val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.table-id-pill {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #818cf8;
+  background: rgba(99, 102, 241, 0.12);
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+.table-tag-pill {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+/* Data Dictionary Cards Grid */
+.dict-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.dict-item-card {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.dict-item-card:hover {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(15, 23, 42, 0.85);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.15);
+}
+
+.dict-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dict-var-name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.12);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  display: inline-block;
+}
+
+.dict-var-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
 }
 
 /* Question Cards & Quiz */

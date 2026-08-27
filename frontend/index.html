@@ -23,7 +23,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css?v=6">
+  <link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body>
 
@@ -160,9 +160,9 @@
         </div>
       </div>
 
-      <!-- Main Dataset Grid (Visualizer + Table) -->
-      <div style="display: grid; grid-template-columns: 1fr; gap: 24px;">
-        <!-- Visualizer Card -->
+      <!-- Main Dataset Layout (Visualizer + Table + Dictionary) -->
+      <div class="main-content-layout">
+        <!-- Card 1: Visualizer Card -->
         <div class="glass-card chart-visualizer-card">
           <div class="chart-header-bar">
             <div class="chart-header-title-group">
@@ -184,7 +184,7 @@
               <label class="control-label" for="chart-col-select" style="margin: 0;">
                 <i class="fa-solid fa-table-columns"></i> Pilih Kolom:
               </label>
-              <select id="chart-col-select" class="form-select" style="min-width: 200px; font-weight: 600;"></select>
+              <select id="chart-col-select" class="form-select" style="max-width: 220px; font-weight: 600;"></select>
             </div>
           </div>
 
@@ -203,32 +203,63 @@
           </div>
         </div>
 
-        <!-- Data Preview Table Card -->
-        <div class="glass-card">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-            <div>
-              <h3 style="font-size: 16px; font-weight: 700;">
-                <i class="fa-solid fa-table" style="color: var(--accent-emerald);"></i> Cuplikan Data Responden (Preview 15 Baris Pertama)
-              </h3>
-              <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">
-                Gunakan tombol unduh Excel / CSV di kanan atas untuk melihat seluruh data lengkap.
-              </p>
+        <!-- Card 2: Data Preview Table Card -->
+        <div class="glass-card dataset-preview-card">
+          <div class="card-header-bar">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div class="card-icon-badge badge-emerald">
+                <i class="fa-solid fa-table"></i>
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <h3 style="font-size: 16.5px; font-weight: 700; margin: 0;">Cuplikan Data Responden</h3>
+                  <span class="preview-count-pill"><i class="fa-solid fa-eye"></i> 15 Baris Pertama</span>
+                </div>
+                <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 3px;">
+                  Geser horizontal pada tabel di bawah untuk melihat seluruh variabel kolom.
+                </p>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <button class="btn btn-outline btn-sm" onclick="exportActiveDataset('xlsx')">
+                <i class="fa-solid fa-file-excel" style="color: #10b981;"></i> Unduh Excel
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="exportActiveDataset('csv')">
+                <i class="fa-solid fa-file-csv" style="color: #38bdf8;"></i> Unduh CSV
+              </button>
             </div>
           </div>
-          <div class="table-responsive">
-            <table class="custom-table">
-              <thead id="dataset-table-head"></thead>
-              <tbody id="dataset-table-body"></tbody>
-            </table>
+
+          <div class="table-responsive-wrapper">
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead id="dataset-table-head"></thead>
+                <tbody id="dataset-table-body"></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-        <!-- Data Dictionary Card -->
-        <div class="glass-card">
-          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px;">
-            <i class="fa-solid fa-book" style="color: var(--accent-amber);"></i> Kamus Variabel (Metadata)
-          </h3>
-          <div id="data-dictionary-list"></div>
+        <!-- Card 3: Data Dictionary Card -->
+        <div class="glass-card dictionary-card">
+          <div class="card-header-bar">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div class="card-icon-badge badge-amber">
+                <i class="fa-solid fa-book-bookmark"></i>
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <h3 style="font-size: 16.5px; font-weight: 700; margin: 0;">Kamus Variabel (Metadata)</h3>
+                  <span class="dict-count-pill" id="dict-count-pill">Metadata</span>
+                </div>
+                <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 3px;">
+                  Definisi operasional dan struktur tipe data untuk tiap variabel dalam survei aktif.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="data-dictionary-list" class="dict-cards-grid"></div>
         </div>
       </div>
     </section>
@@ -514,8 +545,8 @@
   </div>
 
   <!-- Scripts with cache busting -->
-  <script src="js/charts.js?v=4"></script>
-  <script src="js/question_renderer.js?v=4"></script>
-  <script src="js/app.js?v=4"></script>
+  <script src="js/charts.js?v=7"></script>
+  <script src="js/question_renderer.js?v=7"></script>
+  <script src="js/app.js?v=7"></script>
 </body>
 </html>
