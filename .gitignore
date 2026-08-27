@@ -44,3 +44,7 @@ scratch/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Local notes (excluded from git)
+CATATAN_PENJELASAN_*.md
+catatan_*.md
